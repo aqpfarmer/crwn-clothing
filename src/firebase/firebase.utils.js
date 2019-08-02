@@ -12,6 +12,13 @@ const config = {
     appId: "1:525868042687:web:59c5e4846b3a93f4"
   };
 
+  export const createUserProfileDocument = async (userAuth, additionalData) => {
+    if (!userAuth) return;
+
+    console.log(firestore.doc('users/cavalrydude'))
+
+  };
+
   firebase.initializeApp(config);
 
   export const auth = firebase.auth();
