@@ -10,7 +10,7 @@ class SignUp extends React.Component {
     constructor() {
         super();
 
-        this.setState = {
+        this.state = {
             displayName: '',
             email: '',
             password: '',
@@ -21,7 +21,7 @@ class SignUp extends React.Component {
     handleSubmit = async event => {
         event.preventDefault();
 
-        const {displayName, email, password, confirmPassword} = this.state;
+        const { displayName, email, password, confirmPassword } = this.state;
 
         if (password !== confirmPassword) {
             alert("Password don't match");
@@ -29,31 +29,31 @@ class SignUp extends React.Component {
         }
 
         try {
-            const {user} = await auth.createUserWithEmailAndPassword(email, password);
+            const { user } = await auth.createUserWithEmailAndPassword(email, password);
             await createUserProfileDocument(user, { displayName });
-            this.setState = {
+            this.setState({
                 displayName: '',
                 email: '',
                 password: '',
                 confirmPassword: ''
-            };
+            });
 
-        } catch(error) {
+        } catch (error) {
             console.error(error);
         }
-    }
+    };
 
     handleChange = event => {
-        const {name, value} = event.target;
+        const { name, value } = event.target;
 
-        this.setState({[name]: value});
-    }
+        this.setState({ [name]: value });
+    };
 
     render() {
-        const {displayName, email, password, confirmPassword} = this.state;
+        const { displayName, email, password, confirmPassword } = this.state;
         return (
             <div className='sign-up'>
-                <h2 className='titlle'>I do not have an account</h2>
+                <h2 className='title'>I do not have an account</h2>
                 <span>Sign up with your email and password</span>
 
                 <form className='sign-up-form' onSubmit={this.handleSubmit}>
@@ -93,7 +93,7 @@ class SignUp extends React.Component {
                     <CustomButton type='submit'> SIGN UP </CustomButton>               
                 </form>
             </div>
-        )
+        );
     }
 }
 
