@@ -6,10 +6,11 @@ import { createStructuredSelector } from 'reselect';
 import CustomButton from '../custom-button/custom-button-component';
 import CartItem from '../cart-item/cart-item-compoent';
 import { selectCartItems } from '../../redux/cart/cart-selecters';
+import { toggleCartHidden } from '../../redux/cart/cart-actions';
 
 import './cart-dropdown.styles.scss';
 
-const CartDropDown = ({ cartItems, history }) => (
+const CartDropDown = ({ cartItems, history, dispatch }) => (
     <div className='cart-dropdown'>
         <div className='cart-items'>
             {cartItems.length ? (
@@ -20,7 +21,10 @@ const CartDropDown = ({ cartItems, history }) => (
                 <span className='empty-message'>Cart is empty</span>
             )}
         </div>
-        <CustomButton onClick={() => history.push('/checkout')}>GO TO CHECKOUT</CustomButton>
+        <CustomButton onClick={() => {
+            history.push('/checkout');
+            dispatch(toggleCartHidden());
+        }}>GO TO CHECKOUT</CustomButton>
     </div>
 );
 
