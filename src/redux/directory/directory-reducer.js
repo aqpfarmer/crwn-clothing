@@ -1,5 +1,3 @@
-import { Action } from "rxjs/internal/scheduler/Action";
-
 const INITIAL_STATE = {
     sections: [
         {
