@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
+import { encode } from 'querystring';
 
 const config = {
     apiKey: "AIzaSyAPUErE_UtfLoqxXcJATutuTiDxV6MdbLc",
@@ -34,21 +35,41 @@ const config = {
         console.log('error creating user', error.message);
       }
     }
-
     return userRef;
   };
 
-  firebase.initializeApp(config);
-
-  export const addCollectionAndDocuments = (collectionKey, objectsToAdd) => {
+  export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
     const collectionRef = firestore.collection(collectionKey);
+    console.log(collectionRef);
     const batch = firestore.batch();
     objectsToAdd.forEach(obj => {
       const newDocRef = collectionRef.doc();
       batch.set(newDocRef, obj);
     });
-  }
 
+    return await batch.commit();
+  };
+
+  export const convetCollectionsSnapshotToMap = (collections) => {
+    const transformedCollection = collections.docs.map(doc => {
+      const { title, items } = doc.data();
+
+      return {
+        routeName: encodeURI(title.toLowerCase()),
+        id: doc.id,
+        title,
+        items
+      }
+    });
+
+    return transformedCollection.reduce((accumulator, collection) => {
+      accumulator[collection.title.toLowerCase()] = collection;
+      return accumulator;
+    }, {});
+  };
+
+  firebase.initializeApp(config);
+  
   export const auth = firebase.auth();
   export const firestore = firebase.firestore();
   const provider = new firebase.auth.GoogleAuthProvider();
